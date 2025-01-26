@@ -17,7 +17,7 @@ const reviewRouter = require('./routes/reviewRoutes');
 
 // MIDDLEWARES
 // console.log(process.env.NODE_ENV);
-app.use(helmet());
+app.use(helmet()); // Secure Express Apps
 
 const limiter = rateLimit({
   max: 100,
@@ -55,34 +55,34 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use((req, res, next) => {
-//   console.log(
-//     'Hello From the MiddleWare\nIam Checking whatever U show is working or not',
-//   );
-//   next();
-// });
+/* app.use((req, res, next) => {
+  console.log(
+    'Hello From the MiddleWare\nIam Checking whatever U show is working or not',
+  );
+  next();
+});
 
-// ROUTE HANDLERS
-// HTTP Routes
-// app.get('/api/v1/tours', getAllTours);
-// app.get('/api/v1/tours/:id', getTour);
-// app.post('/api/v1/tours', createTour);
-// app.patch('/api/v1/tours/:id', updateTour);
-// app.delete('/api/v1/tours/:id', deleteTour);
+ROUTE HANDLERS
+HTTP Routes
+app.get('/api/v1/tours', getAllTours);
+app.get('/api/v1/tours/:id', getTour);
+app.post('/api/v1/tours', createTour);
+app.patch('/api/v1/tours/:id', updateTour);
+app.delete('/api/v1/tours/:id', deleteTour); */
 
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
 
 app.all('*', (req, res, next) => {
-  // res.status(400).json({
-  //   status: 'fail',
-  //   message: `Can't find ${req.originalUrl}`,
-  // });
+  /*   res.status(400).json({
+    status: 'fail',
+    message: `Can't find ${req.originalUrl}`,
+  });
 
-  // const err = new Error(`Can't find ${req.originalUrl}`);
-  // err.statusCode = 400;
-  // err.status = 'fail';
+  const err = new Error(`Can't find ${req.originalUrl}`);
+  err.statusCode = 400;
+  err.status = 'fail'; */
   next(new APIerrors(`Can't find ${req.originalUrl}`, 404));
 });
 

@@ -10,6 +10,7 @@ const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
+
 const createNewToken = (user, statuscode, res) => {
   const token = signToken(user._id);
 
@@ -35,12 +36,12 @@ const createNewToken = (user, statuscode, res) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
-  // {
-  //   name: req.body.name,
-  //   email: req.body.email,
-  //   password: req.body.password,
-  //   passwordConfirm: req.body.passwordConfirm,
-  // }
+  /* {
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    passwordConfirm: req.body.passwordConfirm,
+  } */
 
   createNewToken(newUser, 200, res);
 });
@@ -68,6 +69,7 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
   // 1) check if token is there or not
+
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
@@ -78,11 +80,11 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(new APIerror('You are not Logged in!Please Log in', 401));
   }
   // 2)Verification Step
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  const userInfo = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   // console.log(decoded);
   // 3) check if User Still exists
 
-  const userCheck = await User.findById(decoded.id);
+  const userCheck = await User.findById(userInfo.id);
   if (!userCheck) {
     return next(
       new APIerror('User belonging to this token no longer exists', 401),
@@ -91,7 +93,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   // 4) if User changes his Password;
 
-  if (userCheck.changedPassword(decoded.iat)) {
+  if (userCheck.changedPassword(userInfo.iat)) {
     return next(new APIerror('User Changed Password! Login Again', 401));
   }
 

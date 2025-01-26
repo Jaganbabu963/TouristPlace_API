@@ -13,30 +13,30 @@ exports.cheapTours = (req, res, next) => {
 
 exports.getAllTours = factory.getAllOne(Tour);
 
-//   catchAsync(async (req, res, next) => {
-//   const features = new APIfeatures(Tour.find(), req.query)
-//     .filter()
-//     .sort()
-//     .limitFields()
-//     .paginate();
-//   const tours = await features.query;
+/*  catchAsync(async (req, res, next) => {
+  const features = new APIfeatures(Tour.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+  const tours = await features.query;
 
-//   // send Response
-//   res.status(200).json({
-//     status: 'success',
-//     // requestedAt: req.requestTime,
-//     results: tours.length,
-//     data: {
-//       tours,
-//     },
-//   });
-//   // } catch (err) {
-//   //   res.status(400).json({
-//   //     status: 'fail',
-//   //     message: err,
-//   //   });
-//   // }
-// });
+  // send Response
+  res.status(200).json({
+    status: 'success',
+    // requestedAt: req.requestTime,
+    results: tours.length,
+    data: {
+      tours,
+    },
+  });
+  // } catch (err) {
+  //   res.status(400).json({
+  //     status: 'fail',
+  //     message: err,
+  //   });
+  // }
+}); */
 
 exports.getTour = factory.getOne(Tour, { path: 'reviews' });
 
